@@ -1,0 +1,48 @@
+<!-- 4.Build a complete UI by using jquery on presentation, real server side with database where  
+scenario is very simple, if we give pincode, areaname should appear.
+a. In one textbox we type pincode, when blur event occurs show the area name next to 
+the pincode textbox -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(() => {
+            $("#pincode").blur(() => {
+                let pincode = { pincode: $('#pincode').val()};
+                let ajaxpara = {
+                    data: pincode,
+                    url: "http://localhost:90/getAreaDetails",
+                    type: "get",
+                    dataType: "json",
+                    success: (data1) => {
+                        console.log(
+                            "data given by server in success " + data1.status+data1.areadetails.area);
+                            let area=data1.areadetails.area;
+                            if(data1.status==true){
+                                $("#area").val(area);
+                            }
+
+                    },
+                    error:(data1)=>{
+                        console.log("data is not given by server"+data1)
+                    }
+                }
+                $.ajax(ajaxpara);
+            })
+
+        })
+    </script>
+</head>
+
+<body>
+    Pincode: <input type="number" name="" id="pincode">
+   Area: <input type="text" name="" id="area" placeholder="Area...">
+</body>
+
+</html>

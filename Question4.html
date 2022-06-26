@@ -1,0 +1,46 @@
+<!-- a.	Build a complete UI by using jquery on presentation, real server side with database where scenario is very simple, if we give acno, balance should appear. 
+b.	In one textbox we type accno, when blur event occurs show the balance, should appear  next to the acno textbox.-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(() => {
+            $("#accno").blur(() => {
+                let input = { accno: $('#accno').val()};
+                let ajaxpara = {
+                    data: input,
+                    url: "http://localhost:91/getAccDetails",
+                    type: "get",
+                    dataType: "json",
+                    success: (data1) => {
+                        console.log(
+                            "data given by server in success " + data1.status+data1.accdetails.balance);
+                            let balance=data1.accdetails.balance;
+                            if(data1.status==true){
+                                $("#balance").val(balance);
+                            }
+
+                    },
+                    error:(data1)=>{
+                        console.log("data is not given by server"+data1)
+                    }
+                }
+                $.ajax(ajaxpara);
+            })
+
+        })
+    </script>
+</head>
+
+<body>
+    Acc Number: <input type="number" name="" id="accno" placeholder="Enter here...">
+   Balance : <input type="text" name="" id="balance">
+</body>
+
+</html>
